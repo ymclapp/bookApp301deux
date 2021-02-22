@@ -1,0 +1,29 @@
+{
+  "name": "bookApp301deux",
+  "version": "1.0.0",
+  "description": "This is the book app for the Google api for my second round of 301",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ymclapp/bookApp301deux.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ymclapp/bookApp301deux/issues"
+  },
+  "homepage": "https://github.com/ymclapp/bookApp301deux#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "pg": "^8.5.1",
+    "superagent": "^6.1.0"
+  }
+}
