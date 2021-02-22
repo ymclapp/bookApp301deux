@@ -28,6 +28,10 @@ app.get('/', (request, response) => {
   response.render('pages/index');
 });
 
+app.get('/new', (request, response) => {
+  response.render('pages/searches/new');
+});
+
 app.use('*', (request, response) => response.send('Sorry, that route does not exist.'));
 
 client.connect() //<<--keep in server.js
