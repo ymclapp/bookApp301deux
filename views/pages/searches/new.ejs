@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <title></title>
+      <meta name="description" content="">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="/public/styles/modules.css">
+   </head>
+   <body>
+      <h1>Search Form</h1>
+<!-- Forms talk to their own url, we can change it with the "action" -->
+<!-- if talking to YOUR server, you don't need the full url -->
+<!-- only need the route "/order" -->
+
+      <form  action="/order">
+        <fieldset>
+         <legend>
+           Search for Title or Author
+         </legend>
+         <label for="name">Title</label>
+         <input type="text" name="name" />
+         <label for="flavor">Author</label>
+         <input type="submit">
+        </fieldset>
+      </form>
