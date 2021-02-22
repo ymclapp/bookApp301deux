@@ -22,8 +22,10 @@ console.log("Server is running on port: ", PORT)
 app.use(express.static('./public'));
 app.use(cors());
 
+app.set('view engine', 'ejs');
+
 app.get('/', (request, response) => {
-  response.send('You have found the home page! ');
+  response.render('pages/index');
 });
 
 app.use('*', (request, response) => response.send('Sorry, that route does not exist.'));
