@@ -26,13 +26,6 @@ app.use(express.static('./public'));
 const PORT = process.env.PORT || 3001 || 3002 || 3003;
 console.log('Server is running on port: ', PORT)
 
-// const path = require('path');
-// app.use(express.json());
-// app.use(expressLayouts);
-
-// app.set('views', path.join(__dirname, 'views'));
-
-
 app.get('/', (request, response) => {
   response.render('pages/index');
   console.log('get');
@@ -42,37 +35,22 @@ app.get('/searches/new', (request, response) => {
   response.render('pages/searches/new');
 });
 
-// app.get('/show', (request, response) => {
-//   response.render('pages/searches/show');
-// });
+app.get('/show', (request, response) => {
+  response.render('pages/searches/show');
+});
 
 app.post('/searches', booksHandler);
 
 
 function booksHandler(request, response) {
-
   const url = 'https://www.googleapis.com/books/v1/volumes';
-
   superagent.get(url)
     .query({
       key: process.env.GOOGLE_API_KEY,
       q: `+in${request.body.searchType}:${request.body.searchQuery}`
     })
-    .then((booksResponse) => {
-      console.log('response', booksResponse);
-      // console.log('body', request.body);
-      let booksData = JSON.parse(booksResponse.text);
-      console.log('book response', booksData.items[0].volumeInfo);
-      let bookReturn = booksResponse.body.items.map(book => {
-        // console.log('book', bookReturn);
-        return new Book(book);
-
-      });
-      // let viewModel = {
-      //   books: bookReturn
-      // }
-      // response.render('pages/searches/show', viewModel);  //we will end up putting in the render instead when we move to show
-    })
+    .then((booksResponse) => booksResponse.body.items.map(bookResult => new Book(bookResult.volumeInfo)))
+    .then(results => response.render('/pages/searches/show.ejs', {results: results}))
     .catch(err => {
       console.log(err);
       errorHandler(err, request, response);
@@ -118,9 +96,10 @@ function notFoundHandler(request, response) {
 app.listen(PORT, () => console.log(`App is listening on ${PORT}`)); //<<--these are tics not single quotes
 
 function Book(booksData) {
-  this.title = booksData.volumeInfo.title;
-  this.authors = booksData.volumeInfo.authors;
-  this.description = booksData.volumeInfo.description;
+  console.log('constructor function function fun fun function ',booksData.title, booksData.authors, booksData.description );
+  this.title = booksData.title;
+  this.authors = booksData.authors;
+  this.description = booksData.description;
   // this.image = booksData.volumeInfo.imageLinks.smallThumbnail;  //if no image, then we use stock that is in Trello card
 }
 

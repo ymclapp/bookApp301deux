@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/styles/base.css" />
-    <link rel="stylesheet" href="/public/styles/reset.css" />
+    <link rel="stylesheet" href="/styles/base.css" />
+    <link rel="stylesheet" href="/styles/reset.css" />
     <title>Book Results</title>
 </head>
 <body>
@@ -34,7 +34,7 @@
     <h2>Books Result</h2>
 </header>
 <!-- inspired from a review of C Nichols file -->
-<% books.forEach( item => { %>
+<% book.forEach( item => { %>
     <div class="resultsContainer">
         <img src="<%= item.image %>">
         <h2><%= item.title %></h2>
