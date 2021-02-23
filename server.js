@@ -12,10 +12,10 @@ const pg = require('pg');
 // const favicon = require('serve-favicon');
 const superagent = require('superagent');
 
-pg.defaults.ssl = process.env.NODE_ENV === 'production' && { rejectUnauthorized: false };
+// pg.defaults.ssl = process.env.NODE_ENV === 'production' && { rejectUnauthorized: false };
 
-const client = new pg.Client(process.env.DATABASE_URL);
-client.on('error', err => console.error(err));
+// const client = new pg.Client(process.env.DATABASE_URL);
+// client.on('error', err => console.error(err));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
@@ -23,60 +23,39 @@ app.set('view engine', 'ejs');
 app.use(express.static('./public'));
 // app.use(methodOverride('_method'));  //goes with methodOverride above
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001 || 3002 || 3003;
 console.log('Server is running on port: ', PORT)
-
-// const path = require('path');
-// app.use(express.json());
-// app.use(expressLayouts);
-
-// app.set('views', path.join(__dirname, 'views'));
-
 
 app.get('/', (request, response) => {
   response.render('pages/index');
+  console.log('get');
 });
 
-app.get('/new', (request, response) => {
+app.get('/searches/new', (request, response) => {
   response.render('pages/searches/new');
 });
 
-// app.get('/show', (request, response) => {
-//   response.render('pages/searches/show');
-// });
+app.get('/show', (request, response) => {
+  response.render('pages/searches/show');
+});
 
-app.get('pages/searches/show', booksHandler);
-app.post('pages/searches/show', booksHandler);
-
+app.post('/searches', booksHandler);
 
 
 function booksHandler(request, response) {
-  console.log(request.body);
   const url = 'https://www.googleapis.com/books/v1/volumes';
-
   superagent.get(url)
     .query({
       key: process.env.GOOGLE_API_KEY,
-      q: `+in${request.body.search}:${request.body.query}`
+      q: `+in${request.body.searchType}:${request.body.searchQuery}`
     })
-    // console.log(request.body.query);
-
-    .then((booksResponse) => {
-      let booksData = JSON.parse(booksResponse.text);
-      let bookReturn = booksData.items.map(book => {
-        return new Book (book);
-      })
-      console.log(bookReturn);
-      // let viewModel = {
-      //   books: bookReturn
-      // }
-      // response.render('pages/searches/show', viewModel);  //we will end up putting in the render instead when we move to show
-    })
-
+    .then((booksResponse) => booksResponse.body.items.map(bookResult => new Book(bookResult.volumeInfo)))
+    .then(results => response.render('/pages/searches/show.ejs', {results: results}))
     .catch(err => {
       console.log(err);
       errorHandler(err, request, response);
     });
+
 }
 
 app.use('*', (request, response) => response.send('Sorry, that route does not exist.'));
@@ -105,20 +84,22 @@ function notFoundHandler(request, response) {
   });
 }
 
-client.connect() //<<--keep in server.js
-  .then(() => {
-    console.log('PG connected!');
+// client.connect() //<<--keep in server.js
+//   .then(() => {
+//     console.log('PG connected!');
 
-    app.listen(PORT, () => console.log(`App is listening on ${PORT}`)); //<<--these are tics not single quotes
-  })
-  .catch(err => {
-    throw `PG error!:  ${err.message}` //<<--these are tics not single quotes
-  });
+//     app.listen(PORT, () => console.log(`App is listening on ${PORT}`)); //<<--these are tics not single quotes
+//   })
+//   .catch(err => {
+//     throw `PG error!:  ${err.message}` //<<--these are tics not single quotes
+//   });
+app.listen(PORT, () => console.log(`App is listening on ${PORT}`)); //<<--these are tics not single quotes
 
 function Book(booksData) {
-  this.title = booksData.volumeInfo.title;
-  this.authors = booksData.volumeInfo.authors;
-  this.description = booksData.volumeInfo.description;
-  this.image = booksData.volumeInfo.imageLinks.smallThumnail;  //if no image, then we use stock that is in Trello card
+  console.log('constructor function function fun fun function ',booksData.title, booksData.authors, booksData.description );
+  this.title = booksData.title;
+  this.authors = booksData.authors;
+  this.description = booksData.description;
+  // this.image = booksData.volumeInfo.imageLinks.smallThumbnail;  //if no image, then we use stock that is in Trello card
 }
 
