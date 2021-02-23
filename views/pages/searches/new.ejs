@@ -33,21 +33,11 @@
     <form action = "/show" method = "POST">
         <fieldset>
          <legend>
-           Search for Title or Author
+          Book Search
          </legend>
-         <label for="name">Title</label>
-         <input type="text" name="name" />
-         <label for="flavor">Author</label>
-         <input type="submit">
+         <input type="text" name="searchQuery" />
+         <span>Title</span> <input type="radio" name="searchType" value="title"/>
+        <span>Author</span><input type="radio" id="author" name="searchType" value="author" />
         </fieldset>
-        <fieldset>
-            <label>
-              <span>Title</span>
-              <input type="radio" id="title" name="radio" value="title" checked />
-            </label>
-            <label>
-              <span>Author</span>
-              <input type="radio" id="author" name="radio" value="author" />
-            </label>
-          </fieldset>
+        <button class = "google--button">Search the Google Books API</button>
       </form>
