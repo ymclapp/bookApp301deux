@@ -21,7 +21,7 @@
                 <ul class="nav navbar-nav">
                     <li><a href="/">Home</a></li>
                     <!-- <li><a href="/about">About</a></li> -->
-                    <li><a href="/new">Search</a></li>
+                    <li><a href="/searches/new">Search</a></li>
                 </ul>
             </div>
         
@@ -30,14 +30,14 @@
         </header>
       <h1>Search Form</h1>
 
-    <form action = "/show" method = "POST">
+    <form action="/searches" method="POST">
         <fieldset>
          <legend>
           Book Search
          </legend>
-         <input type="text" name="searchQuery" />
          <span>Title</span> <input type="radio" name="searchType" value="title"/>
-        <span>Author</span><input type="radio" id="author" name="searchType" value="author" />
+         <span>Author</span><input type="radio" name="searchType" value="author" />
+         <input type="text" name="searchQuery" />
         </fieldset>
-        <button class = "google--button">Search the Google Books API</button>
+        <button class = "google--button" type="submit">Search the Google Books API</button>
       </form>
