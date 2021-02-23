@@ -23,7 +23,7 @@ app.set('view engine', 'ejs');
 app.use(express.static('./public'));
 // app.use(methodOverride('_method'));  //goes with methodOverride above
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001 || 3002 || 3003;
 console.log('Server is running on port: ', PORT)
 
 // const path = require('path');
@@ -50,23 +50,23 @@ app.post('/searches', booksHandler);
 
 
 function booksHandler(request, response) {
-  
+
   const url = 'https://www.googleapis.com/books/v1/volumes';
-  
+
   superagent.get(url)
     .query({
       key: process.env.GOOGLE_API_KEY,
-      q: `+in${request.body.radio}:${request.body.searchQuery}`
+      q: `+in${request.body.searchType}:${request.body.searchQuery}`
     })
     .then((booksResponse) => {
       console.log('response', booksResponse);
       // console.log('body', request.body);
-      // let booksData = JSON.parse(booksResponse.text);
-      // console.log('book response', booksData.items[0].volumeInfo);
+      let booksData = JSON.parse(booksResponse.text);
+      console.log('book response', booksData.items[0].volumeInfo);
       let bookReturn = booksResponse.body.items.map(book => {
         // console.log('book', bookReturn);
         return new Book(book);
-        
+
       });
       // let viewModel = {
       //   books: bookReturn
@@ -77,7 +77,7 @@ function booksHandler(request, response) {
       console.log(err);
       errorHandler(err, request, response);
     });
-   
+
 }
 
 app.use('*', (request, response) => response.send('Sorry, that route does not exist.'));
