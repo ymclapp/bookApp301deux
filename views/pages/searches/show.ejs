@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/styles/base.css" />
+    <link rel="stylesheet" href="/public/styles/reset.css" />
+    <title>Book Results</title>
+</head>
+<body>
+
+<header>
+    <header>
+        <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+        
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                    <span class="glyphicon glyphicon glyphicon-tree-deciduous"></span>
+                    This is in the header partial
+                </a>
+        
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Home</a></li>
+                    <!-- <li><a href="/about">About</a></li> -->
+                    <li><a href="/new">Search</a></li>
+                </ul>
+            </div>
+        
+        </div>
+        </nav>
+        </header>
+    <h2>Books Result</h2>
+</header>
+<!-- inspired from a review of C Nichols file -->
+<% books.forEach( item => { %>
+    <div class="resultsContainer">
+        <img src="<%= item.image %>">
+        <h2><%= item.title %></h2>
+        <h3><%= item.authors %></h3>
+        <p><%= item.description %></p>
+        <!-- <h4><%= item.isbn %></h4> -->
+        <!-- <h6><%= books.bookshelves %></h6> -->
+         <!-- <form action="/books" method="POST"> -->
+            <input type="hidden" name="image_url" value="<%= item.image %>">
+            <input type="hidden" name="title" value="<%= item.title %>">
+            <input type="hidden" name="authors" value="<%= item.authors %>">
+            <input type="hidden" name="summary" value="<%= item.description%>">
+            <!-- <input type="hidden" name="isbn" value="<%= item.isbn %>"> -->
+            <!-- <button type="submit">View Details</button> -->
+        <!-- </form>  -->
+        
+        <!-- <form action="/books" method="POST"> -->
+            <input type="hidden" name="image_url" value="<%= item.image %>">
+            <input type="hidden" name="title" value="<%= item.title %>">
+            <input type="hidden" name="authors" value="<%= item.authors %>">
+            <input type="hidden" name="summary" value="<%= item.description%>">
+            <!-- <input type="hidden" name="isbn" value="<%= item.isbn %>">
+            <button type="submit">Save This Book</button> -->
+        <!-- </form> -->
+    </div>
+    <% }) %>
+
+
+<footer>
+    <!-- <%- include('../partials/footer') %> -->
+</footer>
+
+</body>
+</html>
