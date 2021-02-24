@@ -7,7 +7,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const pg = require('pg');
-const superagent = require('superagent');  //<<--will go in module
+const superagent = require('superagent'); //<<--will go in module
 
 //Database Setup
 // if (!process.env.DATABASE_URL) {
@@ -46,14 +46,14 @@ app.get('/', (request, response) => {
 });
 
 app.get('/searches/new', (request, response) => {
-  response.render('pages/searches/new');  //do not include a / before pages or it will say that it is not in the views folder
+  response.render('pages/searches/new'); //do not include a / before pages or it will say that it is not in the views folder
 });
 
 app.get('/searches/show', (request, response) => {
-  response.render('pages/searches/show');  //do not include a / before pages or it will say that it is not in the views folder
+  response.render('pages/searches/show'); //do not include a / before pages or it will say that it is not in the views folder
 });
 
-app.post('/searches', booksHandler);  //has to match the form action on the new.js for the /searches
+app.post('/searches', booksHandler); //has to match the form action on the new.js for the /searches
 
 //Will end up going into a module
 function booksHandler(request, response) {
@@ -64,7 +64,7 @@ function booksHandler(request, response) {
       q: `+in${request.body.searchType}:${request.body.searchQuery}`
     })
     .then((booksResponse) => booksResponse.body.items.map(bookResult => new Book(bookResult.volumeInfo)))
-    .then(results => response.render('pages/searches/show', {results: results}))  //do not include a / before pages or it will say that it is not in the views folder and do not include the .ejs at the end of show
+    .then(results => response.render('pages/searches/show', {results: results})) //do not include a / before pages or it will say that it is not in the views folder and do not include the .ejs at the end of show
     .catch(err => {
       console.log(err);
       errorHandler(err, request, response);
@@ -101,10 +101,13 @@ function notFoundHandler(request, response) {
 app.listen(PORT, () => console.log(`App is listening on ${PORT}`)); //<<--these are tics not single quotes
 
 function Book(booksData) {
-  console.log('constructor function function fun fun function ',booksData.title, booksData.authors, booksData.description );
+  let placeHolder = 'https://i.imgur.com/J5LVHEL.jpg';
+  let httpRegex = /^(http:\/\/)/g;
+  // console.log('constructor function function fun fun function ',booksData.title, booksData.authors, booksData.description );
   this.title = booksData.title;
   this.authors = booksData.authors;
   this.description = booksData.description;
-  // this.image = booksData.volumeInfo.imageLinks.smallThumbnail;  //if no image, then we use stock that is in Trello card
+  this.image = booksData.imageLinks ? booksData.imageLinks.smallThumbnail.replace(httpRegex, 'https://') : placeHolder; //if no image, then we use stock that is in Trello card
 }
+
 
