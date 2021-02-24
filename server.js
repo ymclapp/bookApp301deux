@@ -40,6 +40,7 @@ app.set('view engine', 'ejs');
 
 
 //API Routes
+
 app.get('/', (request, response) => {
   response.render('pages/index');
   // console.log('get');
