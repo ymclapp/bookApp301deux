@@ -8,13 +8,14 @@ const express = require('express');
 const cors = require('cors');
 const pg = require('pg');
 const superagent = require('superagent'); //<<--will go in module
+const { request } = require('express');
 
-//Database Setup
-// if (!process.env.DATABASE_URL) {
-//   throw 'DATABASE_URL is missing!';
-// }
-// const client = new pg.Client(process.env.DATABASE_URL);
-// client.on('error', err => { throw err; });
+// Database Setup
+if (!process.env.DATABASE_URL) {
+  throw 'DATABASE_URL is missing!';
+}
+const client = new pg.Client(process.env.DATABASE_URL);
+client.on('error', err => { throw err; });
 
 
 // Our Dependencies - modules
@@ -40,10 +41,29 @@ app.set('view engine', 'ejs');
 
 
 //API Routes
-app.get('/', (request, response) => {
-  response.render('pages/index');
-  // console.log('get');
-});
+app.get('/', getBooks);
+
+function getBooks(request, response){
+  const SQL = `
+    SELECT *
+    FROM booksTable
+    `;
+  // const SQLCounter = `
+  //   SELECT COUNT(author)
+  //   FROM bookstable
+  //   `;
+  client.query(SQL)
+    .then(results => {
+      const {rowCount, rows} = results;
+      console.log('DB', rows, rowCount);
+      response.render('pages/index', {
+        books: rows,
+      });
+    })
+    .catch(err => {
+      errorHandler(err, response);
+    });
+}
 
 app.get('/searches/new', (request, response) => {
   response.render('pages/searches/new'); //do not include a / before pages or it will say that it is not in the views folder
@@ -98,7 +118,16 @@ function notFoundHandler(request, response) {
   });
 }
 
-app.listen(PORT, () => console.log(`App is listening on ${PORT}`)); //<<--these are tics not single quotes
+client.connect() //<<--keep in server.js
+  .then(() => {
+    console.log('PG connected!');
+    app.listen(PORT, () => console.log(`App is listening on ${PORT}`)); //<<--these are tics not single quotes
+  })
+  .catch(err => {
+    throw `PG error!:  ${err.message}` //<<--these are tics not single quotes
+  });
+
+
 
 function Book(booksData) {
   let placeHolder = 'https://i.imgur.com/J5LVHEL.jpg';
