@@ -32,14 +32,14 @@ app.get('/', (request, response) => {
 });
 
 app.get('/searches/new', (request, response) => {
-  response.render('pages/searches/new');
+  response.render('pages/searches/new');  //do not include a / before pages or it will say that it is not in the views folder
 });
 
-app.get('/show', (request, response) => {
-  response.render('pages/searches/show');
+app.get('/searches/show', (request, response) => {
+  response.render('pages/searches/show');  //do not include a / before pages or it will say that it is not in the views folder
 });
 
-app.post('/searches', booksHandler);
+app.post('/searches', booksHandler);  //has to match the form action on the new.js for the /searches
 
 
 function booksHandler(request, response) {
@@ -50,7 +50,7 @@ function booksHandler(request, response) {
       q: `+in${request.body.searchType}:${request.body.searchQuery}`
     })
     .then((booksResponse) => booksResponse.body.items.map(bookResult => new Book(bookResult.volumeInfo)))
-    .then(results => response.render('/pages/searches/show.ejs', {results: results}))
+    .then(results => response.render('pages/searches/show', {results: results}))  //do not include a / before pages or it will say that it is not in the views folder and do not include the .ejs at the end of show
     .catch(err => {
       console.log(err);
       errorHandler(err, request, response);
