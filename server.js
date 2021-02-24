@@ -1,34 +1,48 @@
 'use strict';
 
+//Load Environment Variables from the .env file
 require('dotenv').config();
-const cors = require('cors');
 
+// Application Dependencies
 const express = require('express');
-const app = express();
+const cors = require('cors');
 const pg = require('pg');
-// const methodOverride = require('method-override'; //need when we add/delete)
-// const ejs = require('ejs');
-// const expressLayouts = require('express-ejs-layouts');
-// const favicon = require('serve-favicon');
-const superagent = require('superagent');
+const superagent = require('superagent');  //<<--will go in module
 
-// pg.defaults.ssl = process.env.NODE_ENV === 'production' && { rejectUnauthorized: false };
-
+//Database Setup
+// if (!process.env.DATABASE_URL) {
+//   throw 'DATABASE_URL is missing!';
+// }
 // const client = new pg.Client(process.env.DATABASE_URL);
-// client.on('error', err => console.error(err));
+// client.on('error', err => { throw err; });
 
-app.use(express.urlencoded({ extended: true }));
-app.use(cors());
-app.set('view engine', 'ejs');
-app.use(express.static('./public'));
-// app.use(methodOverride('_method'));  //goes with methodOverride above
 
+// Our Dependencies - modules
+
+//Application Setup
 const PORT = process.env.PORT || 3001 || 3002 || 3003;
 console.log('Server is running on port: ', PORT)
+const app = express();
 
+//Express Middleware
+app.use(express.urlencoded({ extended: true }));
+
+//Specify a directory for static resources
+app.use(express.static('./public'));
+
+
+//Cors Middleware
+app.use(cors());
+
+
+//Set the view engine for server-side templating
+app.set('view engine', 'ejs');
+
+
+//API Routes
 app.get('/', (request, response) => {
   response.render('pages/index');
-  console.log('get');
+  // console.log('get');
 });
 
 app.get('/searches/new', (request, response) => {
@@ -41,7 +55,7 @@ app.get('/searches/show', (request, response) => {
 
 app.post('/searches', booksHandler);  //has to match the form action on the new.js for the /searches
 
-
+//Will end up going into a module
 function booksHandler(request, response) {
   const url = 'https://www.googleapis.com/books/v1/volumes';
   superagent.get(url)
@@ -69,7 +83,7 @@ app.use(errorHandler);
 
 //client goes here
 
-
+//Will end up going into a module
 function errorHandler(error, request, response, next) {
   console.error(error);
   response.status(500).json({
@@ -84,15 +98,6 @@ function notFoundHandler(request, response) {
   });
 }
 
-// client.connect() //<<--keep in server.js
-//   .then(() => {
-//     console.log('PG connected!');
-
-//     app.listen(PORT, () => console.log(`App is listening on ${PORT}`)); //<<--these are tics not single quotes
-//   })
-//   .catch(err => {
-//     throw `PG error!:  ${err.message}` //<<--these are tics not single quotes
-//   });
 app.listen(PORT, () => console.log(`App is listening on ${PORT}`)); //<<--these are tics not single quotes
 
 function Book(booksData) {
