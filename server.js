@@ -62,9 +62,36 @@ function getBooks(request, response){
       });
     })
     .catch(err => {
-      errorHandler(err, response);
+      errorHandler(err, request, response);
     });
 }
+
+app.get('/books/:id', getOneBook);
+
+function getOneBook(request, response){
+  const {id} = request.params;
+  console.log('id', id);
+  const SQL = `
+  SELECT *
+  FROM bookstable
+  WHERE id =$1
+  LIMIT 1`; // make it so only one comes back
+  client.query(SQL, [id])
+    .then(results => {
+      const {rows} = results;
+      if(rows.length < 1){
+        // console.log('response', response);
+        errorHandler('Book not Found', request, response);
+      } else{
+        response.render('pages/books/detail-view', { // take of /pages if it doesn't work
+          book: rows[0]
+        });
+      }
+    })
+    .catch(err => {
+      errorHandler(err, request, response);
+    });
+} // end getOneBook function
 
 app.get('/searches/new', (request, response) => {
   response.render('pages/searches/new'); //do not include a / before pages or it will say that it is not in the views folder

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html>
+    <link rel="stylesheet" href="/styles/base.css" />
+    <link rel="stylesheet" href="/styles/reset.css" />
+</head>
+<body>
+    <header>
+			<nav class="navbar navbar-default" role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">
+						<span class="glyphicon glyphicon glyphicon-tree-deciduous"></span>
+						<!-- This is in the header partial -->
+					</a>
+					<ul class="nav navbar-nav">
+						<li><a href="/">Home</a></li>
+						<!-- <li><a href="/about">About</a></li> -->
+						<li><a href="/searches/new">Search</a></li>
+                        
+					</ul>
+				</div>
+			</div>
+			</nav>
+	</header>
+
+    <main>
+        <section class="books-view container">
+            <ul id="book-list">
+                <li class="book-item" data-id="<%=book.id%>">
+                    <h3>Book: <%=book.title%></h3>
+                    <p>Author: <%=book.author%></p>
+                    <p>ISBN: <%=book.isbn%></p>
+                    <p>Description: <%=book.summary%></p>
+                </li>
+            </ul>
+        </section>
+    </main>
+
+        
+        <script src="" async defer></script>
+    </body>
+</html>
