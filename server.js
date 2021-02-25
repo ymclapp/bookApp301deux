@@ -7,6 +7,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const pg = require('pg');
+pg.defaults.ssl = process.env.NODE_ENV === 'production' && { rejectUnauthorized: false };
 const superagent = require('superagent'); //<<--will go in module
 const { request } = require('express');
 
