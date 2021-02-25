@@ -46,7 +46,7 @@ app.get('/', getBooks);
 function getBooks(request, response){
   const SQL = `
     SELECT *
-    FROM booksTable
+    FROM BooksTable
     `;
   // const SQLCounter = `
   //   SELECT COUNT(author)
