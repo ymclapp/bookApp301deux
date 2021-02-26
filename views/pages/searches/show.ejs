@@ -46,10 +46,10 @@
             <h3>Author: <%= item.authors %></h3>
             <p>ISBN: <%= item.isbn %></p>
             <p>Description: <%= item.description %></p>
-            <button type="submit" class="add-to-booklist">Add to BookList</button>
+            <!-- <button type="submit" class="add-to-booklist">Add to BookList</button> -->
             
         </div>
-        <% }) %>
+        <!-- <% }) %>  remove these -->
     <!-- <p><%= book.description %></p> -->
     <!-- <p>ISBN13: <%= book.isbn13 %></p> -->
     <form action="/books" method="POST">
@@ -58,10 +58,10 @@
         <input type="hidden"  name="description" value='<%= book.summary %>'/>
         <input type="hidden" name="isbn" value='<%= book.isbn %>'/>
         <input type="hidden"  name="image_url" value="<%= book.image_url %>" />
-        <!-- <button type="submit" class="add-to-booklist">Add to BookList</button> -->
+        <button type="submit" class="add-to-booklist">Add to BookList</button>
     </form>
         </li>
-    <!-- <% }) %> -->
+    <% }) %>  <!--uncomment these-->
     </ul>
 </div>
 
