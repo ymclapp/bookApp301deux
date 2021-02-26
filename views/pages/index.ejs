@@ -33,11 +33,13 @@
 				<% books.forEach(book => { %>
 					<li class="book-item">
 						<h4>Title: <%= book.title %></h4>
+						<a href="/books/<%= book.id %>">View Details</a>
+						
 					</li>
 
 				<% }) %>
 				<li class="rowCount">
-					<h3>Books in Database: <%= books.length %></h3>
+					<h3>Books in Bookcase: <%= books.length %></h3>
 				</li>
 			</ul>
 		</section>
@@ -52,7 +54,7 @@
 <script></script>
 </body>
 <footer>
-    <h3> This is our footer</h3>
+    <h3> This is our footer where we would display some stats if WE EVER FINISHED!</h3>
 </footer>
 
 </html>
