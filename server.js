@@ -150,7 +150,8 @@ function favoriteBookHandler(request, response, next) {
   const parameters = [author, title, isbn, image_url, summary];
   return client.query(SQL, parameters)
     .then(result => {
-      response.redirect(`/books/detail-view/${result.rows[0].id}`);
+      let id = result.rows[0].id;
+      response.redirect(`/books/${id}`);
       // console.log('cachedlocation', result);
     })
     .catch(err => {
