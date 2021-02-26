@@ -9,7 +9,7 @@ const cors = require('cors');
 const pg = require('pg');
 pg.defaults.ssl = process.env.NODE_ENV === 'production' && { rejectUnauthorized: false };
 const superagent = require('superagent'); //<<--will go in module
-const { request } = require('express');
+const { request } = require('express');  //<<--what is this?
 
 // Database Setup
 if (!process.env.DATABASE_URL) {
@@ -43,6 +43,7 @@ app.set('view engine', 'ejs');
 
 //API Routes
 app.get('/', getBooks);
+app.get('/books/:id', getOneBook);
 
 function getBooks(request, response){
   const SQL = `
@@ -70,7 +71,7 @@ function getBooks(request, response){
 // app.post('/add', addBook);
 
 
-app.get('/books/:id', getOneBook);
+
 
 function getOneBook(request, response){
   const {id} = request.params;
@@ -137,7 +138,7 @@ app.use(errorHandler);
 
 //Will end up going into a module
 
-app.post('/books/detail-view', favoriteBookHandler);
+app.post('/books', favoriteBookHandler);
 
 function favoriteBookHandler(request, response, next) {
   const { author, title, isbn, image_url, summary } = request.body;
@@ -148,7 +149,7 @@ function favoriteBookHandler(request, response, next) {
   RETURNING id 
   `;
   const parameters = [author, title, isbn, image_url, summary];
-  return client.query(SQL, parameters)
+ client.query(SQL, parameters)
     .then(result => {
       let id = result.rows[0].id;
       response.redirect(`/books/${id}`);
