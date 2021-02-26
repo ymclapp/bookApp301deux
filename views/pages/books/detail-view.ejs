@@ -28,6 +28,7 @@
         <section class="books-view container">
             <ul id="book-list">
                 <li class="book-item" data-id="<%=book.id%>">
+                    <img src="<%= book.image_url %>">
                     <h3>Book: <%=book.title%></h3>
                     <p>Author: <%=book.author%></p>
                     <p>ISBN: <%=book.isbn%></p>

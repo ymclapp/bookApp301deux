@@ -33,14 +33,55 @@
         </header>
     <h2>Books Result</h2>
 </header>
-<% results.forEach( item => { %>  <!--the results is coming from the booksHandler .then(results => response.render('pages/searches/show', {results: results})) -->
+<div class="search-results-container">
+    <ul>
+    <% results.forEach(book => { %>
+        <li class="search-item">
+        <!-- <% let imageSource =  book.image_url ? book.image_url : "https://i.imgur.com/J5LVHEL.jpg" %> -->
+    <!-- <img src="<%= book.image %>"> -->
+    <% results.forEach( item => { %>  
+        <div class="resultsContainer">
+            <img src="<%= item.image %>">
+            <h2>Title: <%= item.title %></h2>
+            <h3>Author: <%= item.authors %></h3>
+            <p>ISBN: <%= item.isbn %></p>
+            <p>Description: <%= item.description %></p>
+            
+        </div>
+        <% }) %>
+    <!-- <p><%= book.description %></p> -->
+    <!-- <p>ISBN13: <%= book.isbn13 %></p> -->
+    <form action="/books/<%= book.id %>" method="POST">
+        <input type="hidden" name="title"   value='<%= book.title %>' />
+        <input type="hidden" name="author" value='<%= book.author %>' />
+        <input type="hidden"  name="description" value='<%= book.summary %>'/>
+        <input type="hidden" name="isbn" value='<%= book.isbn %>'/>
+        <input type="hidden"  name="image_url" value="<%= book.image_url %>" />
+        <button type="submit" class="add-to-booklist">Add to BookList</button>
+    </form>
+        </li>
+    <% }) %>
+    </ul>
+</div>
+
+
+
+
+
+
+
+
+
+<!-- <% results.forEach( item => { %>  
     <div class="resultsContainer">
         <img src="<%= item.image %>">
-        <h2><%= item.title %></h2>
-        <h3><%= item.authors %></h3>
-        <p><%= item.description %></p>
+        <h2>Title: <%= item.title %></h2>
+        <h3>Author: <%= item.authors %></h3>
+        <p>ISBN: <%= item.isbn %></p>
+        <p>Description: <%= item.description %></p>
+        
     </div>
-    <% }) %>
+    <% }) %> -->
 
 
 <footer>

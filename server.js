@@ -66,6 +66,10 @@ function getBooks(request, response){
     });
 }
 
+// app.get('/add', showAddBookForm);
+// app.post('/add', addBook);
+
+
 app.get('/books/:id', getOneBook);
 
 function getOneBook(request, response){
@@ -132,6 +136,92 @@ app.use(errorHandler);
 //client goes here
 
 //Will end up going into a module
+
+app.post('/books/detail-view', favoriteBookHandler);
+
+function favoriteBookHandler(request, response, next) {
+  const { author, title, isbn, image_url, summary } = request.body;
+  console.log('request body', request.body);
+  const SQL = `
+  INSERT INTO bookstable (author, title, isbn, image_url, summary)
+  VALUES ($1, $2, $3, $4, $5)
+  RETURNING id 
+  `;
+  const parameters = [author, title, isbn, image_url, summary];
+  return client.query(SQL, parameters)
+    .then(result => {
+      response.redirect(`/books/detail-view/${result.rows[0].id}`);
+      // console.log('cachedlocation', result);
+    })
+    .catch(err => {
+      errorHandler(err, request, response);
+      console.err('failed to handle three partners together', err);
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+// app.post('/books', (request, response) => {
+//   sendBookToDB(request, response);
+// });
+
+// function sendBookToDB(request, response) {
+//   let newBook = request.body
+//   console.log(newBook);
+//   const searchSQL = 'SELECT * FROM bookstable WHERE title = $1';
+//   const searchParameter = [newBook.title];
+//   return client.query(searchSQL, searchParameter)
+//     .then(searchResult => {
+//       if (searchResult.rowCount === 0) {
+//         const SQL = 'INSERT INTO bookstable (author, title, isbn, image_url, summary) VALUES ($1, $2, $3, $4, $5) Returning id';
+//         const sqlParameters = [newBook.author, newBook.title, newBook.isbn, newBook.image_url, newBook.summary];
+//         return client.query(SQL, sqlParameters).then(result => {
+//           console.log('Book saved', result);
+//           let id = result.rows[0].id;
+//           response.redirect(`pages/books/${id}`);
+//         })
+//       } else {
+//         let id = searchResult.rows[0].id;
+//         console.log('Book is already in the bookcase')
+//         response.redirect(`pages/books/${id}`);
+//       }
+//     }).catch(err => { throw err; });
+// }
+
+
+
+// function addBook(event) {
+//   console.log('POST /books', event);
+//   const { author, title, isbn, image_url, summary } = request.body;
+//   const SQL = `
+//     INSERT INTO bookstable (author, title, isbn, image_url, summary)
+//     VALUES ($1, $2, $3, $4, $5)
+//     RETURNING Id
+//   `;
+//   const values = [author, title, isbn, image_url, summary];
+//   // POST - REDIRECT - GET
+//   client.query(SQL, values)
+//     .then(results => {
+//       let id = results.rows[0].id;
+//       response.redirect(`/books/${id}`);
+//     })
+//     .catch(err => errorHandler(err, request, response))
+// }
+
+
+
+
+
+
 function errorHandler(error, request, response, next) {
   console.error(error);
   response.status(500).json({
@@ -160,9 +250,10 @@ client.connect() //<<--keep in server.js
 function Book(booksData) {
   let placeHolder = 'https://i.imgur.com/J5LVHEL.jpg';
   let httpRegex = /^(http:\/\/)/g;
-  // console.log('constructor function function fun fun function ',booksData.title, booksData.authors, booksData.description );
+  // console.log('constructor function function fun fun function ', booksData.industryIdentifiers[0].identifier );
   this.title = booksData.title;
   this.authors = booksData.authors;
+  this.isbn = booksData.industryIdentifiers[0].identifier;
   this.description = booksData.description;
   this.image = booksData.imageLinks ? booksData.imageLinks.smallThumbnail.replace(httpRegex, 'https://') : placeHolder; //if no image, then we use stock that is in Trello card
 }
