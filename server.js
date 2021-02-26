@@ -107,6 +107,7 @@ app.get('/searches/show', (request, response) => {
 });
 
 app.post('/searches', booksHandler); //has to match the form action on the new.js for the /searches
+app.post('/books', favoriteBookHandler);
 
 //Will end up going into a module
 function booksHandler(request, response) {
@@ -138,22 +139,18 @@ app.use(errorHandler);
 
 //Will end up going into a module
 
-app.post('/books', favoriteBookHandler);
 
-function favoriteBookHandler(request, response, next) {
+
+function favoriteBookHandler(request, response) {
   const { author, title, isbn, image_url, summary } = request.body;
   console.log('request body', request.body);
-  const SQL = `
-  INSERT INTO bookstable (author, title, isbn, image_url, summary)
-  VALUES ($1, $2, $3, $4, $5)
-  RETURNING id 
-  `;
+  const SQL = `INSERT INTO bookstable (author, title, isbn, image_url, summary) VALUES ($1, $2, $3, $4, $5) RETURNING id;`;  //<<--make sure there is a semi colon before the back tic
   const parameters = [author, title, isbn, image_url, summary];
- client.query(SQL, parameters)
+  return client.query(SQL, parameters)
     .then(result => {
       let id = result.rows[0].id;
+      console.log('id', id);
       response.redirect(`/books/${id}`);
-      // console.log('cachedlocation', result);
     })
     .catch(err => {
       errorHandler(err, request, response);
