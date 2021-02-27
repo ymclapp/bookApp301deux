@@ -1,0 +1,54 @@
+<header>
+    <header>
+        <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+        
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                    <span class="glyphicon glyphicon glyphicon-tree-deciduous"></span>
+        
+                </a>
+        
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/searches/new">Search</a></li>
+                    
+                </ul>
+            </div>
+        
+        </div>
+        </nav>
+        </header>
+    <h2>Books Result</h2>
+</header>
+<div class="search-results-container">
+    <ul>
+    <% results.forEach(book => { %>
+        <li class="search-item">
+        <!-- <% let imageSource =  book.image_url ? book.image_url : "https://i.imgur.com/J5LVHEL.jpg" %> -->
+    <!-- <img src="<%= book.image %>"> -->
+    <% results.forEach( item => { %>  
+        <div class="resultsContainer">
+            <img src="<%= item.image %>">
+            <h2>Title: <%= item.title %></h2>
+            <h3>Author: <%= item.authors %></h3>
+            <p>ISBN: <%= item.isbn %></p>
+            <p>Description: <%= item.description %></p>
+            <!-- <button type="submit" class="add-to-booklist">Add to BookList</button> -->
+            
+        </div>
+        <!-- <% }) %>  remove these -->
+    <!-- <p><%= book.description %></p> -->
+    <!-- <p>ISBN13: <%= book.isbn13 %></p> -->
+    <form action="/books" method="POST">
+        <input type="hidden" name="title"   value='<%= book.title %>' />
+        <input type="hidden" name="author" value='<%= book.author %>' />
+        <input type="hidden"  name="description" value='<%= book.summary %>'/>
+        <input type="hidden" name="isbn" value='<%= book.isbn %>'/>
+        <input type="hidden"  name="image_url" value="<%= book.image_url %>" />
+        <button type="submit" class="add-to-booklist">Add to BookList</button>
+    </form>
+        </li>
+    <% }) %>  <!--uncomment these-->
+    </ul>
+</div>
