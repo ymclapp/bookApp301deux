@@ -6,7 +6,7 @@
 	<link rel="stylesheet" href="/public/styles/base.css" />
 	<link rel="stylesheet" href="/public/styles/layout.css" />
 	<link rel="stylesheet" href="/public/styles/modules.css" />
-	<link rel="stylesheet" href="/public/styles/reset.css" />
+	<!-- <link rel="stylesheet" href="/public/styles/reset.css" /> -->
 
 	<title>My Book Site</title>
 
@@ -16,9 +16,9 @@
 			<nav class="navbar navbar-default" role="navigation">
 			<div class="container-fluid">
 				<div class="navbar-header">
-					<a class="navbar-brand" href="#">
+					<!-- <a class="navbar-brand" href="#">
 						<span class="glyphicon glyphicon glyphicon-tree-deciduous"></span>
-					</a>
+					</a> -->
 					<ul class="nav navbar-nav">
 						<li><a href="/">Home</a></li>
 						<!-- <li><a href="/about">About</a></li> -->
@@ -28,14 +28,14 @@
 				</div>
 			</div>
 			</nav>
-			<h2>My Books</h2>
+			<h2>My Book Library</h2>
 		</header>
 	
 	<main>
 		<section class="book-view container">
 			<ul>
 				<% books.forEach(book => { %>
-					<li class="book-item">
+					<li class="book-item" font-size=100px font-family=arial>
 						<h4>Title: <%= book.title %></h4>
 						<a href="/books/<%= book.id %>">View Details</a>
 						
