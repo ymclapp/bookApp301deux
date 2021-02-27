@@ -1,12 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <%- include ('../layout/head') %>
-</head>
-
-<body>
-
 <header>
     <header>
         <nav class="navbar navbar-default" role="navigation">
@@ -27,48 +18,37 @@
         
         </div>
         </nav>
-    </header>
-    <h2>My Books Search Results</h2>
+        </header>
+    <h2>Books Result</h2>
 </header>
-
-<% results.forEach(book => { %>
 <div class="search-results-container">
-    <!-- <ul> -->
-    
-        <!-- <li class="search-item" display: none> -->
+    <ul>
+    <% results.forEach(book => { %>
+        <li class="search-item">
         <!-- <% let imageSource =  book.image_url ? book.image_url : "https://i.imgur.com/J5LVHEL.jpg" %> -->
     <!-- <img src="<%= book.image %>"> -->
-
     <% results.forEach( item => { %>  
         <div class="resultsContainer">
             <img src="<%= item.image %>">
             <h2>Title: <%= item.title %></h2>
             <h3>Author: <%= item.authors %></h3>
-            <h4>ISBN: <%= item.isbn %></h4>
+            <p>ISBN: <%= item.isbn %></p>
             <p>Description: <%= item.description %></p>
-            <!-- <button type="submit" class="add-to-booklist">Add to BookList</button> -->  <!--this does nothing-->
-    
+            <!-- <button type="submit" class="add-to-booklist">Add to BookList</button> -->
+            
         </div>
-        <% }) %>  <!--if this stays in, then we get different books, but no add button-->
-
+        <!-- <% }) %>  remove these -->
+    <!-- <p><%= book.description %></p> -->
+    <!-- <p>ISBN13: <%= book.isbn13 %></p> -->
     <form action="/books" method="POST">
-        <input type="hidden" name="title" value='<%= book.title %>' />
+        <input type="hidden" name="title"   value='<%= book.title %>' />
         <input type="hidden" name="author" value='<%= book.author %>' />
-        <input type="hidden" name="description" value='<%= book.summary %>'/>
+        <input type="hidden"  name="description" value='<%= book.summary %>'/>
         <input type="hidden" name="isbn" value='<%= book.isbn %>'/>
-        <input type="hidden" name="image_url" value='<%= book.image_url %>'/>
+        <input type="hidden"  name="image_url" value="<%= book.image_url %>" />
         <button type="submit" class="add-to-booklist">Add to BookList</button>
     </form>
-        <!-- </li> -->
-   <!--uncomment these-->
-    <!-- </ul> -->
+        </li>
+    <% }) %>  <!--uncomment these-->
+    </ul>
 </div>
-<% }) %>  
-
-
-
-
-
-
-</body>
-</html>

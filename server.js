@@ -9,7 +9,7 @@ const cors = require('cors');
 const pg = require('pg');
 pg.defaults.ssl = process.env.NODE_ENV === 'production' && { rejectUnauthorized: false };
 const superagent = require('superagent'); //<<--will go in module
-const { request } = require('express');  //<<--what is this?
+// const { request } = require('express');  //<<--what is this?
 
 // Database Setup
 if (!process.env.DATABASE_URL) {
@@ -19,7 +19,7 @@ const client = new pg.Client(process.env.DATABASE_URL);
 client.on('error', err => { throw err; });
 
 
-// Our Dependencies - modules
+// Our Dependencies
 
 //Application Setup
 const PORT = process.env.PORT || 3001 || 3002 || 3003;
@@ -41,19 +41,31 @@ app.use(cors());
 app.set('view engine', 'ejs');
 
 
-//API Routes
-app.get('/', getBooks);
-app.get('/books/:id', getOneBook);
+app.get('/searches', booksHandler);
+app.post('/searches', booksHandler); //has to match the form action on the new.js for the /searches
 
+
+app.get('/', getBooks);
+
+//API Routes
+
+app.get('/books/:id', getOneBook);
+app.get('/searches/new', (request, response) => {
+  response.render('pages/searches/new'); //do not include a / before pages or it will say that it is not in the views folder
+});
+
+app.get('/searches/show', (request, response) => {
+  response.render('pages/searches/show'); //do not include a / before pages or it will say that it is not in the views folder
+});
+
+
+app.post('/books', favoriteBookHandler);
 function getBooks(request, response){
   const SQL = `
     SELECT *
     FROM BooksTable
     `;
-  // const SQLCounter = `
-  //   SELECT COUNT(author)
-  //   FROM bookstable
-  //   `;
+
   client.query(SQL)
     .then(results => {
       const {rowCount, rows} = results;
@@ -98,18 +110,7 @@ function getOneBook(request, response){
     });
 } // end getOneBook function
 
-app.get('/searches/new', (request, response) => {
-  response.render('pages/searches/new'); //do not include a / before pages or it will say that it is not in the views folder
-});
 
-app.get('/searches/show', (request, response) => {
-  response.render('pages/searches/show'); //do not include a / before pages or it will say that it is not in the views folder
-});
-
-app.post('/searches', booksHandler); //has to match the form action on the new.js for the /searches
-app.post('/books', favoriteBookHandler);
-
-//Will end up going into a module
 function booksHandler(request, response) {
   const url = 'https://www.googleapis.com/books/v1/volumes';
   superagent.get(url)
@@ -124,7 +125,7 @@ function booksHandler(request, response) {
       errorHandler(err, request, response);
     });
 
-}
+} // end booksHandler function
 
 app.use('*', (request, response) => response.send('Sorry, that route does not exist.'));
 
@@ -156,7 +157,7 @@ function favoriteBookHandler(request, response) {
       errorHandler(err, request, response);
       console.err('failed to handle three partners together', err);
     });
-}
+} // end favoriteBookHandler function
 
 
 
