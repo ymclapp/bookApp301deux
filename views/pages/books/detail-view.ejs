@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 
 <html>
-    <link rel="stylesheet" href="/styles/base.css" />
-    <link rel="stylesheet" href="/styles/reset.css" />
+    <head>
+    <link rel="stylesheet" href="/public/styles/base.css" />
+    <link rel="stylesheet" href="/public/styles/layout.css" />
+    <link rel="stylesheet" href="/public/styles/modules.css" />
+    <!-- <link rel="stylesheet" href="/public/styles/reset.css" /> -->
 </head>
 <body>
     <header>
@@ -29,16 +32,16 @@
             <ul id="book-list">
                 <li class="book-item" data-id="<%=book.id%>">
                     <img src="<%= book.image_url %>">
-                    <h3>Book: <%=book.title%></h3>
-                    <p>Author: <%=book.author%></p>
-                    <p>ISBN: <%=book.isbn%></p>
-                    <p>Description: <%=book.summary%></p>
+                    <h3>Book: <%= book.title %></h3>
+                    <p>Author: <%= book.author %></p>
+                    <p>ISBN: <%= book.isbn %></p>
+                    <p>Description: <%= book.summary %></p>
                 </li>
             </ul>
         </section>
     </main>
 
         
-        <script src="" async defer></script>
+        <!-- <script src="" async defer></script> -->
     </body>
 </html>

@@ -100,7 +100,7 @@ function getOneBook(request, response){
         // console.log('response', response);
         errorHandler('Book not Found', request, response);
       } else{
-        response.render('pages/books/detail-view', { // take of /pages if it doesn't work
+        response.render('pages/books/detail-view', { // take off /pages if it doesn't work
           book: rows[0]
         });
       }
@@ -252,10 +252,10 @@ function Book(booksData) {
   let httpRegex = /^(http:\/\/)/g;
   // console.log('constructor function function fun fun function ', booksData.industryIdentifiers[0].identifier );
   this.title = booksData.title;
-  this.authors = booksData.authors;
+  this.author = booksData.authors;
   this.isbn = booksData.industryIdentifiers[0].identifier;
-  this.description = booksData.description;
-  this.image = booksData.imageLinks ? booksData.imageLinks.smallThumbnail.replace(httpRegex, 'https://') : placeHolder; //if no image, then we use stock that is in Trello card
+  this.summary = booksData.description;
+  this.image_url = booksData.imageLinks ? booksData.imageLinks.smallThumbnail.replace(httpRegex, 'https://') : placeHolder; //if no image, then we use stock that is in Trello card
 }
 
 
