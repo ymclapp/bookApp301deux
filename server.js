@@ -60,6 +60,7 @@ app.get('/searches/show', (request, response) => {
 
 
 app.post('/books', favoriteBookHandler);
+
 function getBooks(request, response){
   const SQL = `
     SELECT *
