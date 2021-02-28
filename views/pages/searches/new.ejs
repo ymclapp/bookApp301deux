@@ -8,32 +8,20 @@
    <body>
 
     <header>
-        <nav class="navbar navbar-default" role="navigation">
-        <div class="container-fluid">
-        
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">
-                    <span class="glyphicon glyphicon glyphicon-tree-deciduous"></span>
-                </a>
-        
-                <ul class="nav navbar-nav">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/searches/new">Search</a></li>
-                   
-                </ul>
-            </div>
-        
-        </div>
-        </nav>
-        </header>
-      <h1>Search Form</h1>
+    <ul class="nav navbar-nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/searches/new">Search</a></li>
+    </ul>
+    <nav>
+ 
+    </nav>
+    </header>
 
-    <form action="/searches" method="POST">  <!-- action has to be "/searches" which matches the server.js in the app.post('/searches', booksHandler); -->
+
+    <form class="book-view-container" action="/searches" method="POST">  <!-- action has to be "/searches" which matches the server.js in the app.post('/searches', booksHandler); -->
+        <h1 padding=20px>Search Form</h1>
         <fieldset>
-         <legend>
-          Book Search
-         </legend>
-         <span>Title</span> <input type="radio" name="searchType" value="title"/>
+         <span font-size="20px">Title</span> <input type="radio" name="searchType" value="title"/>
          <span>Author</span><input type="radio" name="searchType" value="author" />
          <input type="text" name="searchQuery" />
         </fieldset>

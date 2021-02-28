@@ -3,39 +3,33 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="/public/styles/base.css" />
-	<link rel="stylesheet" href="/public/styles/layout.css" />
-	<link rel="stylesheet" href="/public/styles/modules.css" />
-	<!-- <link rel="stylesheet" href="/public/styles/reset.css" /> -->
+	<link rel="stylesheet" href="/styles/base.css" />
+	<link rel="stylesheet" href="/styles/layout.css" />
+	<link rel="stylesheet" href="/styles/modules.css" />
+	<link rel="stylesheet" href="/public/styles/reset.css" />
 
 	<title>My Book Site</title>
 
 </head>
 <body>
     <header>
-			<nav class="navbar navbar-default" role="navigation">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<!-- <a class="navbar-brand" href="#">
-						<span class="glyphicon glyphicon glyphicon-tree-deciduous"></span>
-					</a> -->
-					<ul class="nav navbar-nav">
-						<li><a href="/">Home</a></li>
-						<!-- <li><a href="/about">About</a></li> -->
-						<li><a href="/searches/new">Search</a></li>
-						<li><a href="/books/2">Book</a></li>
-					</ul>
-				</div>
-			</div>
-			</nav>
-			<h2>My Book Library</h2>
-		</header>
+		<nav class="navbar navbar-default" role="navigation">           
+			<ul class="nav navbar-nav">
+				<li><a href="/">Home</a></li>
+				<li><a href="/searches/new">Search</a></li>
+				<!-- <li><a href="/books/2">Book</a></li> -->
+			</ul>    
+		</nav>
+	
+		<h1>My Books</h1>
+	</header>
 	
 	<main>
-		<section class="book-view container">
+		<section class="book-view-container">
 			<ul>
 				<% books.forEach(book => { %>
-					<li class="book-item" font-size=100px font-family=arial>
+					<li class="book-item" font-size=100px font-family=arial >
+						<img src="<%= book.image_url %>">
 						<h4>Title: <%= book.title %></h4>
 						<a href="/books/<%= book.id %>">View Details</a>
 						
