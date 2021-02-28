@@ -1,7 +1,31 @@
 
-/* .page--title {
-    color: white;
-    background-color: rgb(105,105,105);
-    padding: 100 px;
-    margin: 20 px;
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    display: inline-block;
+    font-size: 20px;
+    margin: 15px;
+}
+
+.book-view-container, .resultscontainer, .book-results-container {
+    width: 80%;
+    margin: 30px auto;
+    padding: 15px;
+    border: 5px solid midnightblue;
+    border-radius: 15px;
+    display: grid;
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+ 
+/* .card-container > * {
+    text-align: center;
+}
+
+.card-container > img {
+    justify-self: center;
 } */
