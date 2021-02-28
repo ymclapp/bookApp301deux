@@ -8,8 +8,9 @@ const express = require('express');
 const cors = require('cors');
 const pg = require('pg');
 pg.defaults.ssl = process.env.NODE_ENV === 'production' && { rejectUnauthorized: false };
-const superagent = require('superagent'); //<<--will go in module
+const superagent = require('superagent'); 
 // const { request } = require('express');  //<<--what is this?
+const methodOverride = require('method-override');
 
 // Database Setup
 if (!process.env.DATABASE_URL) {
@@ -35,7 +36,7 @@ app.use(express.static('./public'));
 
 //Cors Middleware
 app.use(cors());
-
+app.use(methodOverride('_method'));
 
 //Set the view engine for server-side templating
 app.set('view engine', 'ejs');
@@ -57,6 +58,10 @@ app.get('/searches/new', (request, response) => {
 app.get('/searches/show', (request, response) => {
   response.render('pages/searches/show'); //do not include a / before pages or it will say that it is not in the views folder
 });
+
+app.delete('/books/:id', deleteOneBook);
+app.put('/books/:id/edit-view', updateOneBook);
+app.get('/books/:id/edit-view', editOneBook);
 
 
 app.post('/books', favoriteBookHandler);
@@ -147,9 +152,62 @@ function favoriteBookHandler(request, response) {
     })
     .catch(err => {
       errorHandler(err, request, response);
-      console.err('failed to handle three partners together', err);
+      console.err('Error in favoriteBookHandler', err);
     });
 } // end favoriteBookHandler function
+
+function deleteOneBook(request, response) {
+  console.log('DELETE', request.params.books_id)
+  const SQL = `
+    DELETE FROM bookstable
+    WHERE Id = $1
+  `;
+  console.log(request.params.id);
+  client.query(SQL, [request.params.books_id])
+    .then(() => {
+      response.redirect('/');
+    })
+    .catch(err => errorHandler(err, response));
+} // end deleteOneBook function
+
+function editOneBook(request, response) {
+  const SQL = `
+    SELECT *
+    FROM bookstable
+    WHERE Id = $1
+  `;
+  client.query(SQL, [request.params.books_id])
+    .then(results => {
+      const books = results.rows[0];
+      const viewModel = {
+        books
+      };
+      response.render(`/books/:id/edit-view`, viewModel);
+    })
+}  // end editOneBook function
+
+function updateOneBook(request, response) {
+  console.log(request.params);
+  const { title, author, isbn , image_url, summary, bookshelves } = request.body;
+  const SQL = `
+    UPDATE bookstable SET
+    author=$1,
+    title=$2,
+    isbn=$3,
+    image_url=$4,
+    summary=$5,
+    bookshelves=$6
+    WHERE id = $7
+  `;
+  const parameters = [author, title, isbn , image_url, summary, bookshelves,  parseInt(request.params.books_id)];
+  client.query(SQL, parameters)
+    .then(() => {
+      response.redirect(`/books/${request.params.books_id}`);
+    })
+    .catch( error => console.log(error));
+}  // end updateOneBook function
+
+
 
 function errorHandler(error, request, response, next) {
   console.error(error);
